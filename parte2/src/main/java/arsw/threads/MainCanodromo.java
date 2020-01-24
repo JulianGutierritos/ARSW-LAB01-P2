@@ -36,7 +36,6 @@ public class MainCanodromo {
                                     galgos[i] = new Galgo(can.getCarril(i), "" + i, reg);
                                     //inicia los hilos
                                     galgos[i].start();
-
                                 }
                                
 				can.winnerDialog(reg.getGanador(),reg.getUltimaPosicionAlcanzada() - 1); 
@@ -52,6 +51,9 @@ public class MainCanodromo {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+						for (int i = 0; i < can.getNumCarriles(); i++){
+						galgos[i].pausar();
+						}
                         System.out.println("Carrera pausada!");
                     }
                 }
@@ -61,6 +63,9 @@ public class MainCanodromo {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+						for (int i = 0; i < can.getNumCarriles(); i++){
+						galgos[i].reaunudar();
+						}
                         System.out.println("Carrera reanudada!");
                     }
                 }
