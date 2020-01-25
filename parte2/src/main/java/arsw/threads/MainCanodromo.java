@@ -11,10 +11,7 @@ public class MainCanodromo {
 
     private static Canodromo can;
 
-    private static RegistroLlegada reg = new RegistroLlegada();
-    
-    private static PrintWinner print = new PrintWinner();
-   
+    private static RegistroLlegada reg = new RegistroLlegada();   
 
     public static void main(String[] args) {
         can = new Canodromo(17, 100);
