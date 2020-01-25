@@ -7,17 +7,25 @@ package arsw.threads;
  * 
  */
 public class Galgo extends Thread {
+	
 	private int paso;
 	private Carril carril;
 	RegistroLlegada regl;
 	public boolean pausar;
+	public Canodromo can;
 
-	public Galgo(Carril carril, String name, RegistroLlegada reg) {
+	public synchronized static void print(Canodromo can, RegistroLlegada reg) {
+		can.winnerDialog(reg.getGanador(),reg.getUltimaPosicionAlcanzada() - 1); 
+        System.out.println("El ganador fue:" + reg.getGanador());
+	}
+	
+	public Galgo(Carril carril, String name, RegistroLlegada reg, Canodromo can) {
 		super(name);
 		this.carril = carril;
 		paso = 0;
 		this.regl=reg;
 		this.pausar = false;
+		this.can=can;
 	}
 
 	public void corra() throws InterruptedException {
@@ -42,12 +50,16 @@ public class Galgo extends Thread {
 				}
 			}
 		}
+
+		print(can,regl);
+//		synchronized (this) {
+//			notify();
+//		}
 	}
 
 
 	@Override
 	public void run() {
-		
 		try {
 			corra();
 		} catch (InterruptedException e) {

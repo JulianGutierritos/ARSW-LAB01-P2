@@ -12,6 +12,9 @@ public class MainCanodromo {
     private static Canodromo can;
 
     private static RegistroLlegada reg = new RegistroLlegada();
+    
+    private static PrintWinner print = new PrintWinner();
+   
 
     public static void main(String[] args) {
         can = new Canodromo(17, 100);
@@ -29,23 +32,59 @@ public class MainCanodromo {
                         //La acción del botón se realiza en un hilo aparte para evitar
                         //bloquear la interfaz gráfica.
                         ((JButton) e.getSource()).setEnabled(false);
-                        new Thread() {
+                        for (int i = 0; i < can.getNumCarriles(); i++) {
+                            galgos[i] = new Galgo(can.getCarril(i), "" + i, reg , can);
+                        }
+                        
+                         new Thread() {
                             public void run() {
-                                for (int i = 0; i < can.getNumCarriles(); i++) {
-                                    //crea los hilos 'galgos'
-                                    galgos[i] = new Galgo(can.getCarril(i), "" + i, reg);
-                                    //inicia los hilos
+                               synchronized (this) {
+                               	for (int i = 0; i < can.getNumCarriles(); i++) {
                                     galgos[i].start();
                                 }
-                               
-				can.winnerDialog(reg.getGanador(),reg.getUltimaPosicionAlcanzada() - 1); 
-                                System.out.println("El ganador fue:" + reg.getGanador());
+                               }
                             }
-                        }.start();
-
+                         }.start();
                     }
-                }
-        );
+                }   
+        );          
+                               
+//							   try {
+//								join();
+//	                               synchronized (this) {
+//	                              		can.winnerDialog(reg.getGanador(),reg.getUltimaPosicionAlcanzada() - 1); 
+//	                                   System.out.println("El ganador fue:" + reg.getGanador());
+//	                                  }
+//							   } catch (InterruptedException e) {
+//								   e.printStackTrace();
+//							   }
+
+                               /*try {
+									join();
+									new Thread() {
+	                                	@Override
+	                                	public void run() {
+	                                		can.winnerDialog(reg.getGanador(),reg.getUltimaPosicionAlcanzada() - 1); 
+	                                        System.out.println("El ganador fue:" + reg.getGanador());
+	                                    
+	                                        try {
+												join();
+											} catch (InterruptedException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}
+	                                	}
+	                                	
+	                                }.start();
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+                                System.out.println("Aqui");*/
+//                            }
+//                        }.start();
+//                    }
+//                }
+//        );
 
         can.setStopAction(
                 new ActionListener() {
