@@ -42,6 +42,25 @@ public class MainCanodromo {
                                }
                             }
                          }.start();
+                         
+                         new Thread() {
+                             public void run() {
+                                synchronized (this) {
+                                	for (int i = 0; i < can.getNumCarriles(); i++) {
+	                                    try {
+											galgos[i].join();
+	                                     
+	                                    } catch (InterruptedException e) {
+											e.printStackTrace();
+	                                    }
+                                     
+                                	}
+                                	can.winnerDialog(reg.getGanador(),reg.getUltimaPosicionAlcanzada() - 1); 
+							        System.out.println("El ganador fue:" + reg.getGanador());
+                                }
+                             }
+                          }.start();
+                         
                     }
                 }   
         );          
