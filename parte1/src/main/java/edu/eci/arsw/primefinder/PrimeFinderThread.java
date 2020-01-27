@@ -3,35 +3,38 @@ package edu.eci.arsw.primefinder;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PrimeFinderThread extends Thread{
+public class PrimeFinderThread extends Thread {
 
-	
-	int a,b;
-	boolean pausar;
-	
-	private List<Integer> primes=new LinkedList<Integer>();
-	
+	int a, b;
+
+	private List<Integer> primes = new LinkedList<Integer>();
+
+	private boolean pause;
+
 	public PrimeFinderThread(int a, int b) {
 		super();
 		this.a = a;
 		this.b = b;
-		this.pausar = false;
+		this.pause = false;
 	}
 
-	public void run(){
-		try{
-			for (int i=a;i<=b;i++){						
-				if (isPrime(i)){
-					//System.out.println(i);
-					primes.add(i);
-				}
-				synchronized (this) {
-					while (pausar) {
+	public void run() {
+		for (int i = a; i <= b; i++) {
+			synchronized(this){
+				while (pause) {
+					try {
 						wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 				}
 			}
-	    }catch (Exception e){}
+
+			if (isPrime(i)){
+				primes.add(i);
+				System.out.println(i);
+			}
+		}
 	}
 	
 	boolean isPrime(int n) {
@@ -47,18 +50,15 @@ public class PrimeFinderThread extends Thread{
 		return primes;
 	}
 	
-	public void pausar(){
-		pausar = true;
+	public void stopThread(){
+		this.pause=true;
 	}
-	
-	public void reaunudar(){
-		pausar = false;
-		synchronized (this) {
+
+	public void resumeThread(){
+		this.pause=false;
+		synchronized(this){
 			notify();
 		}
 	}
-	
-	
-	
 	
 }

@@ -1,29 +1,54 @@
 package edu.eci.arsw.primefinder;
 
-import java.io.Console;
-public class Main {
+import java.util.Scanner;
 
-	public static void main(String[] args) {
-		Console c = System.console();
-		PrimeFinderThread pft1=new PrimeFinderThread(0, 10000000);
-		PrimeFinderThread pft2=new PrimeFinderThread(10000000, 20000000);
-		PrimeFinderThread pft3=new PrimeFinderThread(20000000, 30000000);
+public class Main{
+
+	private static PrimeFinderThread pft1, pft2, pft3;
+
+	public static void main(String[] args) throws InterruptedException {
+		pft1 = new PrimeFinderThread(0, 1000000);
+		pft2 = new PrimeFinderThread(10000000, 20000000);
+		pft3 = new PrimeFinderThread(20000000, 30000000);
+		startAll();
+
+		Thread.sleep(5000);
+
+		stopAll();
+		input();
+		resumeAll();
+
+	}
+
+	private static void startAll(){
 		pft1.start();
 		pft2.start();
 		pft3.start();
-		try{
-			Thread.sleep(5000);
-			pft1.pausar();
-			pft2.pausar();
-			pft3.pausar();
-		} catch (Exception e){}
-		System.out.println(pft1.getPrimes().size());
-		System.out.println(pft2.getPrimes().size());
-		System.out.println(pft3.getPrimes().size());
-		c.format("\nPresionar Enter para continuar.\n");
-		c.readLine();
-		pft1.reaunudar();
-		pft2.reaunudar();
-		pft3.reaunudar();
-	}	
+	}
+
+	private static void input(){
+		System.out.println("Please, press the ENTER key to continue");
+		Scanner sc = new Scanner(System.in);
+		String i = "enter";
+		while(true){
+			if (i.equals("")){
+				break;
+			}
+			i = sc.nextLine();
+		}
+		sc.close();
+	}
+
+	private static void stopAll(){
+		pft1.stopThread();
+		pft2.stopThread();
+		pft3.stopThread();
+	}
+
+	private static void resumeAll(){
+		pft1.resumeThread();
+		pft2.resumeThread();
+		pft3.resumeThread();
+	}
+	
 }
