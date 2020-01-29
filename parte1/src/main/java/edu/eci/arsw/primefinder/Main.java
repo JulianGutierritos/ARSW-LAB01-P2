@@ -15,8 +15,21 @@ public class Main{
 		Thread.sleep(5000);
 
 		stopAll();
+		System.out.println("De 0 a 10000000: "+ pft1.getPrimes().size());
+		System.out.println("De 10000000 a 20000000: "+ pft2.getPrimes().size());
+		System.out.println("De 20000000 a 30000000: "+ pft3.getPrimes().size());
 		input();
 		resumeAll();
+		
+		boolean vivos = true;
+		while (vivos==true){
+            if(pft1.isAlive() || pft2.isAlive() || pft3.isAlive()){
+                vivos = true;
+            }else{vivos=false;}
+		}
+		System.out.println("De 0 a 10000000: "+ pft1.getPrimes().size());
+		System.out.println("De 10000000 a 20000000: "+ pft2.getPrimes().size());
+		System.out.println("De 20000000 a 30000000: "+ pft3.getPrimes().size());
 
 	}
 
@@ -24,6 +37,7 @@ public class Main{
 		pft1.start();
 		pft2.start();
 		pft3.start();
+
 	}
 
 	private static void input(){
